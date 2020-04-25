@@ -76,16 +76,13 @@ def returner(msg):
     if (msg.text == '*TIMER OFF*'):
         TimerOn = False
         group.send(WordStr.TimerOff)
-    """if msg.is_at:#被at就嘤嘤嘤
-        group.send(WordStr.YYY[randint(0,len(WordStr.YYY)-1)])"""
     f = ''
-    if ('.help' in msg.text) | ('。help' in msg.text):#显示帮助
+    if (msg.text[0:5] == '.help') | (msg.text[0:5] == '。help'):#显示帮助
         if len(msg.text) == 5:
             temp = WordStr.hlp+'ON' if rpt else WordStr.hlp+'OFF'
             group.send(temp)
         else:
             exec('group.send(WordStr.'+msg.text[6:]+'hlp)')
-            
     if msg.member.puid not in pu:#第一次在群中出现的人的初始化
         pu.append(msg.member.puid)
         nm.append(msg.member.name)
@@ -99,7 +96,7 @@ def returner(msg):
         for i in range(0,len(pu)):
             rp[i] = randint(1,100)
             dt = strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日')
-    if ('.rd' in msg.text) | ('。rd' in msg.text):#将rd转化为。r1d
+    if (msg.text[0:3] == '.rd') | (msg.text[0:3] == '。rd'):#将rd转化为。r1d
         if (len(msg.text) == 3) | (msg.text[3:4] == ' '):
             f = '.r1d100'+msg.text[3:]
         else:
@@ -130,7 +127,7 @@ def returner(msg):
             except:
                 group.send(WordStr.Err)
             rgid = -1
-    elif ('.reg' in msg.text) | ('。reg' in msg.text):#各种。reg
+    elif (msg.text[0:4] == '.reg') | (msg.text[0:4] == '。reg'):#各种。reg
         try:
             x = msg.text[5:]
             if x == '':
@@ -168,9 +165,9 @@ def returner(msg):
                     group.send(WordStr.CRDUpd.format(tn,y,msg.text[5:].upper(),str(eval('pl['+str(si)+'].'+y))))
         except:
             group.send(WordStr.Err)
-    elif ('.jrrp' in msg.text) | ('。jrrp' in msg.text):#显示今日人品
+    elif (msg.text[0:5] == '.jrrp') | (msg.text[0:5] == '。jrrp'):#显示今日人品
         group.send(WordStr.Jrrp.format(tn,dt,str(rp[si])))
-    elif ('.nn' in msg.text) | ('。nn' in msg.text):#更改昵称
+    elif (msg.text[0:3] == '.nn') | (msg.text[0:3] == '。nn'):#更改昵称
         if ' ' in msg.text:
             if len(msg.text[4:]) > 30:
                 group.send('@'+tn+' '+WordStr.RCG[randint(0,len(WordStr.RCG)-1)])
@@ -186,7 +183,7 @@ def returner(msg):
     elif (msg.text == '*RPT ON*'):
         rpt = True
         group.send(WordStr.RPT.format('开启'))
-    elif ('.复读' in msg.text) | ('。复读' in msg.text):#手动复读
+    elif (msg.text[0:3] == '.复读') | (msg.text[0:3] == '。复读'):#手动复读
         if ' ' in msg.text:
             if len(msg.text[4:]) > 50:
                 group.send('@'+tn+' '+WordStr.RCG[randint(0,len(WordStr.RCG)-1)])
@@ -194,7 +191,7 @@ def returner(msg):
                 group.send(WordStr.Repeat.format(msg.text[4:],tn))
         else:
             group.send(WordStr.EmptyRpt[randint(0,1)])
-    elif ('.rc' in msg.text) | ('。rc' in msg.text) | ('.ra' in msg.text) | ('。ra' in msg.text):#检定
+    elif (msg.text[0:3] == '.rc') | (msg.text[0:3] == '。rc') | (msg.text[0:3] == '.ra') | (msg.text[0:3] == '。ra'):#检定
         d = randint(1,100)
         k = msg.text[3:] if msg.text[3] != ' ' else msg.text[4:]
         if ' ' in k:
@@ -219,7 +216,7 @@ def returner(msg):
             group.send(WordStr.RC.format(tn,y,d,t))    
         except:
             group.send(WordStr.Err)
-    elif ('.coc' in msg.text) | ('。coc' in msg.text):#人物卡生成
+    elif (msg.text[0:4] == '.coc') | (msg.text[0:4] == '。coc'):#人物卡生成
         x = 1
         s = WordStr.COC.format(tn)
         if ' ' in msg.text:
@@ -246,7 +243,7 @@ def returner(msg):
             '总和(不含幸运)SUM：'+ str(ax[9]) + '(' + str(ax[10]) + ')\n'\
             '———————————\n'
         group.send(s)
-    elif ('.rb' in msg.text) | ('。rb' in msg.text) | ('.rp' in msg.text) | ('。rp' in msg.text):#奖励骰/惩罚骰
+    elif (msg.text[0:3] == '.rb') | (msg.text[0:3] == '。rb') | (msg.text[0:3] == '.rp') | (msg.text[0:3] == '。rp'):#奖励骰/惩罚骰
         x1 = randint(1,100)
         x2 = []
         y  = ''
@@ -285,7 +282,7 @@ def returner(msg):
             group.send(WordStr.RBP.format(tn,msg.text[2].upper(),x1,k,x2,x))
         else:
             group.send(WordStr.RBPn.format(y,tn,msg.text[2].upper(),x1,k,x2,x))
-    elif ('.rhd' in msg.text) | ('。rhd' in msg.text):#暗骰
+    elif (msg.text[0:4] == '.rhd') | (msg.text[0:4] == '。rhd'):#暗骰
         group.send(WordStr.RHDGroup)
         fr = bot.friends().search('',puid=msg.member.puid)[0]
         if len(msg.text) == 4:
