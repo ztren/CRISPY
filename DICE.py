@@ -24,7 +24,11 @@ if WordStr.GroupName == '':
 
 bot = Bot(cache_path=True)
 bot.enable_puid('wxpy_puid.pkl')
-group = bot.groups().search(WordStr.GroupName)[0]
+try:
+    group = bot.groups().search(WordStr.GroupName)[0]
+except:
+    print('Can''t find the group. Please pin the group and try again.\n')
+    raise
 group.send(WordStr.Hello)
 init()
 
