@@ -1,7 +1,7 @@
 # COCdicebot
 CRISPY, the COC7 Dicebot, by ZTREN
 ## 概述
-CRISPY是基于COC7的跑团规则，由ZTREN独立编写的微信dicebot，旨在成为溯洄骰的微信版替代品。目前已经复刻了溯洄骰的除黑白名单以及之外的几乎所有功能。
+CRISPY是基于COC7的跑团规则，由ZTREN独立编写的微信dicebot，旨在成为溯洄骰的微信版替代品。目前已经复刻了溯洄骰的除黑白名单、draw以及me之外的几乎所有功能。
 ## 安装
 ### 1.安装python3
 **注意：本程序并不兼容python2。**\
