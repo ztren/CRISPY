@@ -1,3 +1,5 @@
 
 wxpy.pkl
-__pycache__/WordStr.cpython-37.pyc
+wxpy_puid.pkl
+__pycache__/*
+groups/*
