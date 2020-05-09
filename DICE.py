@@ -1,4 +1,4 @@
-####DICEBOT release 1.0.0####
+####DICEBOT release 1.0.1####
 ##########BY  ZTREN##########
 #———————————————————————————#
 #MODIIFYING OF THIS FILE IS##
@@ -43,7 +43,7 @@ def returner(msg):
         pers.close()
         changemisc('pu',readmisc('pu')+[pu+'\n'])
     tn = getvl(pu,'name')
-    if msg.member.name != getvl(pu,'wname'):
+    if msg.member.name != getvl(pu,'wname'):#更新群昵称
         st(pu,'wname',msg.member.name)
     if (dt+'\n' != readmisc('dt')[0]):#jrrp更新
         changemisc('dt',dt+'\n')
@@ -54,7 +54,8 @@ def returner(msg):
             group.send(WordStr.Repeat.format(msg.text,tn))
         else:
             group.send(WordStr.DRM[randint(0,len(WordStr.DRM)-1)] + '#bot')
-    if msg.text[0]+'\n' in readmisc('cmd'):
+    sleep(0.2)
+    if msg.text[0]+'\n' in readmisc('cmd'):#命令列表
         if (msg.text[1:4] == 'bot'):
             if msg.member == group.owner:
                 if (msg.text[5:] == 'on'):
@@ -65,9 +66,9 @@ def returner(msg):
                     group.send(WordStr.Muted)
             else:
                 group.send(WordStr.NotOwner)
-        if readrule('mute') == 'on':
+        if readrule('mute') == 'on':#被禁言时退出
             return
-        if (msg.text[1:4] == 'rpt'):
+        if (msg.text[1:4] == 'rpt'):#复读开关
             if msg.member == group.owner:
                 try:
                     if msg.text[5:].lower() == 'off':
@@ -82,18 +83,18 @@ def returner(msg):
                     group.send(WordStr.Err)
             else:
                 group.send(WordStr.NotOwner)
-        if (msg.text[1:5] == 'help'):#显示帮助
+        elif (msg.text[1:5] == 'help'):#显示帮助
             if len(msg.text) == 5:
                 group.send(WordStr.hlp.format(readrule('rpt')))
             else:
                 group.send(eval('WordStr.'+msg.text[6:]+'hlp'))
-        if (msg.text[1:5] == 'rules'):#显示帮助
+        elif (msg.text[1:5] == 'rules'):#显示房规
             s = readmisc('rule')
             a = 'COC房规：'+WordStr.cocrule.split('######')[int(readrule('cocrule'))]+'其他规则：\n'
             for i in range(1,len(s)):
                 a += s[i]
             group.send(WordStr.showrule.format(a))
-        elif (msg.text[1:3] == 'st'):
+        elif (msg.text[1:3] == 'st'):#记录数据
             try:
                 a = msg.text[4:] if msg.text[3] == ' ' else msg.text[3:]
                 if '|' in a:
@@ -117,8 +118,10 @@ def returner(msg):
                                 if a[i] == val+'\n':
                                     a.pop(i)
                                     a.pop(i)
+                                    group.send(WordStr.DelReg.format(tn,val))
                                     break
-                            group.send(WordStr.DelReg.format(tn,val))
+                                if i == len(a)-1:
+                                    group.send(NoData.format(val))
                         writepl(pu,a)
                     else:
                         nam = syn(nam)
@@ -148,8 +151,9 @@ def returner(msg):
                             group.send(WordStr.CRDUpd.format(tn,nam,val))
             except IndexError:
                 group.send(WordStr.Err)
-            #except NameError:
-        elif (msg.text[1:3] == 'en'):
+            except NameError:
+                group.send(WordStr.NoData.format(nam))
+        elif (msg.text[1:3] == 'en'):#成长检定
             x = msg.text[4:] if msg.text[3] == ' ' else msg.text[3:]
             try:
                 x = x.split(' ')
@@ -189,14 +193,14 @@ def returner(msg):
                 group.send(WordStr.Err)
             except ValueError:
                 group.send(WordStr.NotInteger.format(nam))
-        elif (msg.text[1:8] == 'choose '):
+        elif (msg.text[1:8] == 'choose '):#选择
             if ' ' in msg.text[8:]:
                 x = msg.text[8:].split(' ')
             else:
                 x = msg.text[8:].split('/')
             if len(x) >= 2:
                 group.send(WordStr.choice.format(x[randint(0,len(x)-1)]))
-        elif (msg.text[1:7] == 'setcoc'):
+        elif (msg.text[1:7] == 'setcoc'):#coc房规
             if msg.member == group.owner:
                 x = msg.text[8:] if msg.text[7] == ' ' else msg.text[7:]
                 try:
@@ -212,7 +216,7 @@ def returner(msg):
                     group.send(WordStr.Err)
             else:
                 group.send(WordStr.NotOwner)
-        elif (msg.text[2] == 'i'):
+        elif (msg.text[2] == 'i'):#疯狂症状
             r1 = randint(1,10)
             r2 = '1D10 = ' + str(randint(1,10))
             if msg.text[1] == 't':
@@ -242,7 +246,7 @@ def returner(msg):
                         group.send(WordStr.FunctionChange.format('jrrp',msg.text[6:]))
                     else:
                         group.send(WordStr.NotOwner)
-        elif (msg.text[1:5] == 'send'):#显示今日人品
+        elif (msg.text[1:5] == 'send'):#向骰子拥有者发送消息
             if msg.text[6:].lower() == 'on' or msg.text[6:].lower() == 'off':
                 if msg.member == group.owner:
                     changerule('send',msg.text[6:])
@@ -255,7 +259,7 @@ def returner(msg):
                     bot.file_helper.send(WordStr.Send_msg.format(getvl(pu,'wname'),WordStr.GroupName,msg.text[6:]))
                 else:
                     group.send(WordStr.SendUnavailable)
-        elif (msg.text[1:3] == 'ob'):
+        elif (msg.text[1:3] == 'ob'):#旁观
             a = readmisc('ob')
             if pu + '\n' in a:
                 a.pop(a.index(pu+'\n'))
@@ -294,20 +298,20 @@ def returner(msg):
                     group.send(WordStr.Repeat.format(msg.text[4:],tn))
             else:
                 group.send(WordStr.EmptyRpt[randint(0,1)])
-        elif (msg.text[1:8] == 'transfer'):
-            x = msg.text[8:] if msg.text[8] != ' ' else msg.text[9:]
+        elif (msg.text[1:9] == 'transfer'):#数据转移
+            x = msg.text[9:] if msg.text[9] != ' ' else msg.text[10:]
             if x == 'all':
                 group.send(WordStr.Transfering.format('所有用户'))
-                a = readmisc('pl')
-                b = a
+                a = readmisc('pu')
+                b = deepcopy(a)
                 ob = readmisc('ob')
                 c = []
                 for i in range(0,len(a)-1):
-                    puSource = a[i][-1]
+                    puSource = a[i][:-1]
                     s = readpl(puSource)
                     ttn = getvl(puSource,'wname')
                     for j in range(i+1,len(a)):
-                        puTarget = a[j][-1]
+                        puTarget = a[j][:-1]
                         if (getvl(puTarget,'wname') == ttn) & (puSource != puTarget):
                             writepl(puTarget,s)
                             b.pop(i)
@@ -319,19 +323,20 @@ def returner(msg):
                             c.append(getvl(puTarget,'wname'))
                             os.remove('groups/'+WordStr.GroupName+'/'+puSource)
                             break
-                writemisc('pl',b)
-                writemisc('ob',ob)
+                changemisc('pu',b)
+                changemisc('ob',ob)
                 s = ''
-                for i in range(0,len(c)):
-                    s += c[i] + '\n'
+                if len(c) > 0:
+                    for i in range(0,len(c)):
+                        s += c[i] + '\n'
                 group.send(WordStr.TransferResult.format(len(c),s))
             else:
                 group.send(WordStr.Transfering.format(getvl(pu,'wname')))
-                a = readmisc('pl')
+                a = readmisc('pu')
+                b = deepcopy(a)
                 ob = readmisc('ob')
-                c = ''
                 for i in range(0,len(a)):
-                    puSource = a[i][-1]
+                    puSource = a[i][:-1]
                     s = readpl(puSource)
                     ttn = getvl(puSource,'wname')
                     if getvl(pu,'wname') == ttn:
@@ -346,8 +351,9 @@ def returner(msg):
                                     ob[ob.index(a[i])] = pu + '\n'
                                 else:
                                     ob.pop(ob.index(a[i]))
-                            c.append(getvl(puTarget,'wname'))
                             os.remove('groups/'+WordStr.GroupName+'/'+puSource)
+                            changemisc('pu',b)
+                            changemisc('ob',ob)
                             group.send(WordStr.TransferResult.format(1,getvl(pu,'wname')))
                             break
                     if i == len(a)-1:
@@ -440,7 +446,7 @@ def returner(msg):
                 group.send(WordStr.NoData.format(x))
             except ValueError:
                 group.send(WordStr.NotInteger.format(x))
-        elif (msg.text[1:3] == 'sc'):
+        elif (msg.text[1:3] == 'sc'):#san check
             x = msg.text[3:] if msg.text[3] != ' ' else msg.text[4:]
             x,y = x.split('/')
             x,y = eval(calc(x)),eval(calc(y))
