@@ -9,7 +9,7 @@ CRISPY是基于COC7的跑团规则，由ZTREN独立编写的微信dicebot，旨�
 https://www.python.org/downloads/
 ### 2.安装wxpy
 **WINDOWS用户需要安装pip。** \
-运行init文件夹中的
+用管理员模式运行init文件夹中的setup.cmd文件\
 OSX、LINUX：
 ```
 pip install wxpy
@@ -55,6 +55,8 @@ https://github.com/ztren/COC7dicebot/releases \
 ### 1、使用微信登陆失败，如何解决？
 请进入[网页版微信网址](https://web.weixin.qq.com)并尝试登录网页版微信，检查自己的微信号是否可以使用网页版微信。若提示无法登录网页版微信，则需要更换使用时间更长，微信安全等级更高的微信号登录。
 ### 2、打开程序时显示IndexError: list index out of range错误，如何解决
-在需要绑定骰子的群聊中发送几条消息并将其置顶再运行程序。等程序运行之后可以将其取消置顶。多次尝试即可。
+首先在WordStr.py的GroupName变量中填入需要绑定的微信群，并在群聊中发送几条消息然后将其置顶，再运行程序。等程序运行之后可以将其取消置顶。多次尝试即可。
 ### 3、我该如何修改dicebot所说的台词？
-修改WordStr文件即可。
+修改WordStr.py文件即可。
+### 4、若群名更改，我该如何转移数据？
+修改WordStr.py的GroupName变量使其和新群对应，然后将groups目录下名为[原微信群群名]的文件夹修改为[现有微信群群名]然后再重新启动bot。
