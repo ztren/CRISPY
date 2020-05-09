@@ -50,7 +50,8 @@ sthlp = \
 '''
 transferhelp = \
 '''——transfer功能使用指南——
-.transfer <XXX> 将原群昵称为XXX的
+.transfer <XXX> 将原群昵称为XXX的用户数据转移到你的数据下
+.transfer all 将群内所有人的原先的用户数据转移到现在的表单中
 '''
 
 cocrule = \
