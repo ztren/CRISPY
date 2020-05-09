@@ -1,10 +1,10 @@
-######WordStr VER 6.0.0######
+####WordStr release 1.0.0####
 ##########BY  ZTREN##########
 #———————————————————————————#
 #THIS FILE IS FREE TO MODIFY#
 ############ENJOY!###########
 
-GroupName = 'tester'#跑团群群名
+GroupName = ''#跑团群群名
 RCG = \
 ['爬','给爷爬','你说你马呢？','输的啥心里没丶ACD数？','8太行嗷']
 DRM = \

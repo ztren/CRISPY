@@ -19,6 +19,9 @@ import WordStr
 import DiceConstant
 import NameGenerator
 
+if WordStr.GroupName == '':
+    raise Exception('Please Input the Name of Your WeChat Group.')
+
 bot = Bot(cache_path=True)
 bot.enable_puid('wxpy_puid.pkl')
 group = bot.groups().search(WordStr.GroupName)[0]
