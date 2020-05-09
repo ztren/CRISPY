@@ -18,7 +18,7 @@ def init():
         misc.close()
     except:
         pass
-        
+
 def readpl(pl):
     pers = open('groups/'+WordStr.GroupName+'/'+pl,mode = 'r')
     a = pers.readlines()
@@ -110,7 +110,9 @@ def syn(nam):
 
 def dice(expr):
     x,y = expr.split('d')
-    if (int(x) > 100) | (int(y) > 100000):
+    if (int(x) > 100):
+        raise Exception
+    elif (int(y) > 100000):
         raise IndexError
     sum = ''
     for i in range(0,int(x)):

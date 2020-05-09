@@ -46,7 +46,7 @@ def returner(msg):
         if randint(1,2) == 1:
             group.send(WordStr.Repeat.format(msg.text,tn))
         else:
-            group.send(WordStr.DRM[randint(0,len(WordStr.DRM)-1)] + '#梦话')
+            group.send(WordStr.DRM[randint(0,len(WordStr.DRM)-1)] + '#bot')
     if msg.text[0]+'\n' in readmisc('cmd'):
         if (msg.text[1:4] == 'bot'):
             if msg.member == group.owner:
@@ -485,7 +485,7 @@ def returner(msg):
                     t = msg.text[3:].split(' ')[0]
                     t = 1 if t == '' else int(t)
                     if t > 100:
-                        group.send('@'+tn+' '+WordStr.RCG[randint(0,len(WordStr.RCG)-1)])
+                        group.send(WordStr.TooManyDices)
                         t = -1
                     y = msg.text[3:].split(' ')[1]
                 else:
@@ -524,21 +524,26 @@ def returner(msg):
                 fr.send(WordStr.RHD.format(WordStr.GroupName,tn,r))
                 fr.send(WordStr.RHDLine)
         elif (msg.text[1] == 'r'):#普通骰子
-            if ' ' in msg.text[2:]:
-                x,z = msg.text[2:].split(' ')
-            else:
-                x,z = msg.text[2:],''
-            if x[0] == 'd':
-                if x == 'd':
-                    x = '1d100'
-                elif x[1] in ['+','-','*','/','(',')']:
-                    x = '1d100' + x[1:]
+            try:
+                if ' ' in msg.text[2:]:
+                    x,z = msg.text[2:].split(' ')
                 else:
-                    x = '1' + x
-            y = calc(x)
-            l = x if str(eval(y)) == y else x + '=' + y
-            if (z == ''):
-                group.send(WordStr.ROLL.format(tn,l,floor(eval(y))))
-            else:
-                group.send(WordStr.ROLLn.format(z,tn,l,floor(eval(y))))
+                    x,z = msg.text[2:],''
+                if x[0] == 'd':
+                    if x == 'd':
+                        x = '1d100'
+                    elif x[1] in ['+','-','*','/','(',')']:
+                        x = '1d100' + x[1:]
+                    else:
+                        x = '1' + x
+                y = calc(x)
+                l = x if str(eval(y)) == y else x + '=' + y
+                if (z == ''):
+                    group.send(WordStr.ROLL.format(tn,l,floor(eval(y))))
+                else:
+                    group.send(WordStr.ROLLn.format(z,tn,l,floor(eval(y))))
+            except IndexError:
+                group.send(WordStr.TooManyFaces)
+            except Exception:
+                group.send(WordStr.TooManyDices)
 embed()

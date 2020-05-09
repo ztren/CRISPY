@@ -6,9 +6,9 @@
 
 GroupName = 'tester'#跑团群群名
 RCG = \
-['cnm','sb','nmsl','傻逼','rnm','gck','爬','给爷爬','你说你马呢？','输的啥心里没丶ACD数？']#random curse generator
+['爬','给爷爬','你说你马呢？','输的啥心里没丶ACD数？','8太行嗷']
 DRM = \
-['昂？','爷佛了','啥啊','这是ao的','啊？','#¥…#¥!@#','搜到有','爬']#梦话
+['昂？','爷佛了','啥啊','这是ao的','啊？','#¥…#¥!@#','搜到有','爬']
 hlp = \
 '''——CRISPY使用指南——
 CRISPY release 1.0.0
@@ -85,6 +85,10 @@ NotOwner = \
 '你并不是群主，无法使用此命令~'
 NotInteger = \
 '你输入的{0}数值好像并不是一个整数x'
+TooManyDices = \
+'扔的骰子太多啦 CRISPY也算不过来啦x'
+TooManyFaces = \
+'这是几面骰？不是一个球吗'
 Transfering = \
 '正在转移{0}的数据……'
 TransferResult = \
