@@ -1,4 +1,4 @@
-####DICEBOT release 1.0.1####
+####DICEBOT release 1.0.2####
 ##########BY  ZTREN##########
 #———————————————————————————#
 #MODIIFYING OF THIS FILE IS##
