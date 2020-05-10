@@ -58,10 +58,11 @@ def returner(msg):
     if msg.text[0]+'\n' in readmisc('cmd'):#命令列表
         if (msg.text[1:4] == 'bot'):
             if msg.member == group.owner:
-                if (msg.text[5:] == 'on'):
+                x = cmd(msg.text[4:])
+                if (x.lower() == 'on'):
                     changerule('mute','off')
                     group.send(WordStr.Unmuted)
-                elif (msg.text[5:] == 'off'):
+                elif (x.lower() == 'off'):
                     changerule('mute','on')
                     group.send(WordStr.Muted)
             else:
@@ -70,13 +71,14 @@ def returner(msg):
             return
         if (msg.text[1:4] == 'rpt'):#复读开关
             if msg.member == group.owner:
+                x = cmd(msg.text[4:])
                 try:
-                    if msg.text[5:].lower() == 'off':
+                    if x.lower() == 'off':
                         changerule('rpt','off')
-                        group.send(WordStr.FunctionChange.format('随机复读',msg.text[5:]))
-                    elif msg.text[5:].lower() == 'on':
+                        group.send(WordStr.FunctionChange.format('随机复读',x))
+                    elif x.lower() == 'on':
                         changerule('rpt','on')
-                        group.send(WordStr.FunctionChange.format('随机复读',msg.text[5:]))
+                        group.send(WordStr.FunctionChange.format('随机复读',x))
                     else:
                         raise
                 except:
@@ -85,9 +87,10 @@ def returner(msg):
                 group.send(WordStr.NotOwner)
         elif (msg.text[1:5] == 'help'):#显示帮助
             if len(msg.text) == 5:
-                group.send(WordStr.hlp.format(readrule('rpt')))
+                group.send(WordStr.help.format(readrule('rpt')))
             else:
-                group.send(eval('WordStr.'+msg.text[6:]+'hlp'))
+                x = cmd(msg.text[5:])
+                group.send(eval('WordStr.'+x+'help'))
         elif (msg.text[1:5] == 'rules'):#显示房规
             s = readmisc('rule')
             a = 'COC房规：'+WordStr.cocrule.split('######')[int(readrule('cocrule'))]+'其他规则：\n'
@@ -96,7 +99,7 @@ def returner(msg):
             group.send(WordStr.showrule.format(a))
         elif (msg.text[1:3] == 'st'):#记录数据
             try:
-                a = msg.text[4:] if msg.text[3] == ' ' else msg.text[3:]
+                a = cmd(msg.text[3:])
                 if '|' in a:
                     group.send(WordStr.RegSuc)
                     a = a.split('|')
@@ -154,7 +157,7 @@ def returner(msg):
             except NameError:
                 group.send(WordStr.NoData.format(nam))
         elif (msg.text[1:3] == 'en'):#成长检定
-            x = msg.text[4:] if msg.text[3] == ' ' else msg.text[3:]
+            x = cmd(msg.text[3:])
             try:
                 x = x.split(' ')
                 nam = syn(x[0])
@@ -193,16 +196,30 @@ def returner(msg):
                 group.send(WordStr.Err)
             except ValueError:
                 group.send(WordStr.NotInteger.format(nam))
-        elif (msg.text[1:8] == 'choose '):#选择
-            if ' ' in msg.text[8:]:
-                x = msg.text[8:].split(' ')
-            else:
-                x = msg.text[8:].split('/')
-            if len(x) >= 2:
-                group.send(WordStr.choice.format(x[randint(0,len(x)-1)]))
+        elif (msg.text[1:7] == 'choose'):#选择
+            x = cmd(msg.text[7:])
+            try:
+                n = 1
+                a = []
+                x = sep(x)
+                if ' ' in x[-1]:
+                    n = int(x[-1].split(' ')[1])
+                    x[-1] = x[-1].split(' ')[0]
+                if (n >= len(x)) | (n > 50):
+                    raise ValueError
+                while len(a) < n:
+                    a.append(x.pop(randint(0,len(x)-1)))
+                s = ''
+                for i in range(0,len(a)):
+                    s += a[i]
+                    if i != len(a)-1:
+                        s += '+'
+                group.send(WordStr.choice.format(s))
+            except ValueError:
+                group.send(WordStr.nochoice)
         elif (msg.text[1:7] == 'setcoc'):#coc房规
             if msg.member == group.owner:
-                x = msg.text[8:] if msg.text[7] == ' ' else msg.text[7:]
+                x = cmd(msg.text[7:])
                 try:
                     x = int(x)
                     if x in range(0,6):
@@ -240,23 +257,25 @@ def returner(msg):
                 else:
                     group.send(WordStr.JrrpUnavailable)
             else:
-                if msg.text[6:].lower() == 'on' or msg.text[6:].lower() == 'off':
+                x = cmd(msg.text[5:])
+                if x.lower() == 'on' or x.lower() == 'off':
                     if msg.member == group.owner:
-                        changerule('jrrp',msg.text[6:])
-                        group.send(WordStr.FunctionChange.format('jrrp',msg.text[6:]))
+                        changerule('jrrp',x.lower())
+                        group.send(WordStr.FunctionChange.format('jrrp',x.lower()))
                     else:
                         group.send(WordStr.NotOwner)
         elif (msg.text[1:5] == 'send'):#向骰子拥有者发送消息
-            if msg.text[6:].lower() == 'on' or msg.text[6:].lower() == 'off':
+            x = cmd(msg.text[5:])
+            if x.lower() == 'on' or x.lower() == 'off':
                 if msg.member == group.owner:
-                    changerule('send',msg.text[6:])
-                    group.send(WordStr.FunctionChange.format('send',msg.text[6:]))
+                    changerule('send',x.lower())
+                    group.send(WordStr.FunctionChange.format('send',x.lower()))
                 else:
                     group.send(WordStr.NotOwner)
             else:
                 if readrule('send') == 'on':
                     group.send(WordStr.Send)
-                    bot.file_helper.send(WordStr.Send_msg.format(getvl(pu,'wname'),WordStr.GroupName,msg.text[6:]))
+                    bot.file_helper.send(WordStr.Send_msg.format(getvl(pu,'wname'),WordStr.GroupName,x))
                 else:
                     group.send(WordStr.SendUnavailable)
         elif (msg.text[1:3] == 'ob'):#旁观
@@ -285,21 +304,23 @@ def returner(msg):
                     except:
                         group.send(WordStr.Err)
             else:
-                if len(msg.text[4:]) > 30:
+                x = cmd(msg.text[3:])
+                if len(x) > 30:
                     group.send('@'+tn+' '+WordStr.RCG[randint(0,len(WordStr.RCG)-1)])
                 else:
-                    st(pu,'name',msg.text[4:])
-                    group.send(WordStr.NN.format(msg.text[4:]))
+                    st(pu,'name',x)
+                    group.send(WordStr.NN.format(x))
         elif (msg.text[1:3] == '复读'):#手动复读
-            if ' ' in msg.text:
-                if len(msg.text[4:]) > 100:
+            if len(msg.text) > 3:
+                x = cmd(msg.text[3:])
+                if len(x) > 100:
                     group.send('@'+tn+' '+WordStr.RCG[randint(0,len(WordStr.RCG)-1)])
                 else:
                     group.send(WordStr.Repeat.format(msg.text[4:],tn))
             else:
-                group.send(WordStr.EmptyRpt[randint(0,1)])
+                group.send(WordStr.EmptyRpt[randint(0,len(WordStr.EmptyRpt)-1)])
         elif (msg.text[1:9] == 'transfer'):#数据转移
-            x = msg.text[9:] if msg.text[9] != ' ' else msg.text[10:]
+            x = cmd(msg.text[9:])
             if x == 'all':
                 group.send(WordStr.Transfering.format('所有用户'))
                 a = readmisc('pu')
@@ -359,7 +380,7 @@ def returner(msg):
                     if i == len(a)-1:
                         group.send(WordStr.TransferFailed.format(WordStr.NoUsr))
         elif (msg.text[1:3] == 'rc') | (msg.text[1:3] == 'ra'):#检定
-            x = msg.text[3:] if msg.text[3] != ' ' else msg.text[4:]
+            x = cmd(msg.text[3:])
             try:
                 d = randint(1,100)
                 if ' ' in x:
@@ -447,8 +468,8 @@ def returner(msg):
             except ValueError:
                 group.send(WordStr.NotInteger.format(x))
         elif (msg.text[1:3] == 'sc'):#san check
-            x = msg.text[3:] if msg.text[3] != ' ' else msg.text[4:]
-            x,y = x.split('/')
+            x = cmd(msg.text[3:])
+            x,y = sep(x)
             x,y = eval(calc(x)),eval(calc(y))
             try:
                 r = randint(1,100)
@@ -462,32 +483,34 @@ def returner(msg):
             except:
                 group.send(WordStr.NoData.format('理智'))
         elif (msg.text[1:4] == 'coc'):#人物卡生成
-            x = 1
-            s = WordStr.COC.format(tn)
-            if ' ' in msg.text:
-                num = findall(msg.text[0:4]+' (\d+)', msg.text)
-                x = int(num[0][0])
-            for i in range(0,x):
-                ax = [((randint(1,6)+randint(1,6)+randint(1,6))*5) for i in range(0,6)]\
-                     + [((randint(1,6)+randint(1,6)+6)*5) for i in range (0,3)] + [0,0]
-                ax[2],ax[5] = ax[6],ax[8]
-                for ii in range(0,9):
-                    ax[9] += ax[ii]
-                    if ii != 8:
-                        ax[10] += ax[ii]
-                s += \
-                '力量STR：'+ str(ax[0]) + '\n'\
-                '体质CON：'+ str(ax[1]) + '\n'\
-                '体型SIZ：'+ str(ax[2]) + '\n'\
-                '敏捷DEX：'+ str(ax[3]) + '\n'\
-                '外貌APP：'+ str(ax[4]) + '\n'\
-                '智力INT：'+ str(ax[5]) + '\n'\
-                '意志POW：'+ str(ax[6]) + '\n'\
-                '教育EDU：'+ str(ax[7]) + '\n'\
-                '幸运LUK：'+ str(ax[8]) + '\n'\
-                '总和(不含幸运)SUM：'+ str(ax[9]) + '(' + str(ax[10]) + ')\n'\
-                '———————————\n'
-            group.send(s)
+            try:
+                x = 1
+                s = WordStr.COC.format(tn)
+                if len(msg.text) > 4:
+                    x = int(cmd(msg.text[4:]))
+                for i in range(0,x):
+                    ax = [((randint(1,6)+randint(1,6)+randint(1,6))*5) for i in range(0,6)]\
+                         + [((randint(1,6)+randint(1,6)+6)*5) for i in range (0,3)] + [0,0]
+                    ax[2],ax[5],ax[6],ax[8] = ax[6],ax[8],ax[2],ax[5]
+                    for ii in range(0,9):
+                        ax[9] += ax[ii]
+                        if ii != 8:
+                            ax[10] += ax[ii]
+                    s += \
+                    '力量STR：'+ str(ax[0]) + '\n'\
+                    '体质CON：'+ str(ax[1]) + '\n'\
+                    '体型SIZ：'+ str(ax[2]) + '\n'\
+                    '敏捷DEX：'+ str(ax[3]) + '\n'\
+                    '外貌APP：'+ str(ax[4]) + '\n'\
+                    '智力INT：'+ str(ax[5]) + '\n'\
+                    '意志POW：'+ str(ax[6]) + '\n'\
+                    '教育EDU：'+ str(ax[7]) + '\n'\
+                    '幸运LUK：'+ str(ax[8]) + '\n'\
+                    '总和(不含幸运)SUM：'+ str(ax[9]) + '(' + str(ax[10]) + ')\n'\
+                    '———————————\n'
+                group.send(s)
+            except ValueError:
+                group.send(WordStr.NotInteger.format(''))
         elif (msg.text[1:3] == 'rb') | (msg.text[1:3] == 'rp'):#奖励骰/惩罚骰
             x1 = randint(1,100)
             x2 = []

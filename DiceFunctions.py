@@ -9,7 +9,8 @@ def init():
         os.makedirs('groups/'+WordStr.GroupName)
     try:
         misc = open('groups/'+WordStr.GroupName+'/_misc',mode = 'x')
-        initmisc = ['<cmd>\n/\n.\n。\n!\n！\n</cmd>\n',
+        initmisc = ['<cmd>\n/\n.\n。\n,\n，\n!\n！\n</cmd>\n',
+        '<sep>\n,\n，\n/\n|\n \n</sep>'
         '<dt>\n'+strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日')+'\n</dt>\n',
         '<rule>\ncocrule 0\nsend off\njrrp on\nrpt off\nmute off\n</rule>\n',
         '<pu>\n</pu>\n<ob>\n</ob>\n']
@@ -107,6 +108,16 @@ def syn(nam):
         if nam.upper() in DiceConstant.syn[i]:
             return DiceConstant.syn[i][0]
     return nam
+
+def cmd(text):
+    return text[1:] if text[0] == ' ' else text
+
+def sep(text):
+    a = readmisc('sep')
+    for i in range(0,len(a)):
+        if a[i][:-1] in text:
+            return text.split(a[i][:-1])
+    raise ValueError
 
 def dice(expr):
     x,y = expr.split('d')

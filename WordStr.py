@@ -10,9 +10,9 @@ RCG = \
 DRM = \
 ['昂？','爷佛了','啥啊','这是ao的','啊？','#¥…#¥!@#','搜到有','爬']#随机复读
 
-hlp = \
+help = \
 '''——CRISPY使用指南——
-CRISPY release 1.0。1
+CRISPY release 1.0.2
 已经开发的功能有：
 .rules：规则速查
 .rd [text]：[因为text]投掷1D100的一颗骰子
@@ -28,21 +28,23 @@ CRISPY release 1.0。1
 .复读 [msg]：让骰子复读你的话（长度限制100）
 .jrrp：显示今日人品
 .send：向dice拥有者的文件传输助手发送消息
-.choose <xx/yy/zz>（或<xx yy zz>）从选项中选择一个，选恐助手
+.choose <xx/yy/zz> [n]从选项中选择n个(默认为1)，选恐助手
 .st：详细见 .help st
 .trasnfer：详细见 .help transfer
 群主指令：详细见.help cmd
 注：[]内为选填，<>内为必填
 目前随机复读状态为：{0}
-视为bot指令的提示符为：'.' '。' '/' '!' '！'
+视为bot指令的提示符为：'.' '。' '/' '!' '！' ',' '，'
+视为分割线的提示符为：',' '，' '/' '|' ' '
+提示符可在groups/群名/_misc文件中修改
 '''
-cmdhlp = \
+cmdhelp = \
 '''群主指令列表：
 .bot on(off) 将本bot禁言或解除禁言
 .rpt/jrrp/send on(off) 开启或关闭随机复读/今日人品/发送消息功能
 注：由于技术限制，微信群管理员无法使用此命令。多有不便，敬请谅解。
 '''
-sthlp = \
+sthelp = \
 '''——ST功能使用指南——
 .st <XXX> <数据> 人物卡数据填写（如STR 65）
 .st <XXX+表达式> 人物卡数据改变（如STR+5，san+1d6）
@@ -81,7 +83,7 @@ cocrule = \
 不满50出96 - 100大失败，满50出99 - 100大失败
 '''
 #coc房规设置
-setcochlp = \
+setcochelp = \
 '为每个群设置COC房规，如.setcoc 1（可选：0-5）\n'+cocrule
 #房规设置帮助
 NotOwner = \
@@ -144,6 +146,9 @@ EN = \
 choice = \
 '当然是选择{0}啦'
 #选项
+nochoice = \
+'你这样写让我怎么选嘛'
+#choose命令格式错误
 OB = \
 '{0}已经成功更改为旁观者模式(￣▽￣)／'
 #进入ob位
