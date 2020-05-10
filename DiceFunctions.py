@@ -1,3 +1,11 @@
+#———————————————————————————#
+####DICEBOT release 1.0.2####
+##########BY  ZTREN##########
+#———————————————————————————#
+#MODIIFYING OF THIS FILE IS##
+#NOT ADVICED UNLESS YOU KNOW#
+######WHAT YOU ARE DOING#####
+#———————————————————————————#
 from random import *
 from time import *
 import os
