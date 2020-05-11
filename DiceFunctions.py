@@ -18,7 +18,7 @@ def init():
     try:
         misc = open('groups/'+WordStr.GroupName+'/_misc',mode = 'x')
         initmisc = ['<cmd>\n/\n.\n。\n,\n，\n!\n！\n</cmd>\n',
-        '<sep>\n,\n，\n/\n|\n \n</sep>'
+        '<sep>\n,\n，\n/\n|\n \n</sep>\n'
         '<dt>\n'+strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日')+'\n</dt>\n',
         '<rule>\ncocrule 0\nsend off\njrrp on\nrpt off\nmute off\n</rule>\n',
         '<pu>\n</pu>\n<ob>\n</ob>\n']
