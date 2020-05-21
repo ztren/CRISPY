@@ -101,6 +101,15 @@ TooManyDices = \
 TooManyFaces = \
 '这是几面骰？不是一个球吗'
 #骰子面数太多
+MemberExit = \
+'有人退出群聊了哦..'
+#有人退出群聊提示
+MemberWelcome = \
+'''欢迎新人加入本群！
+输入.help查看CRISPY食用方法～
+提示：请勿发送太多次以防刷屏
+'''
+#加入群聊提示
 showrule = \
 '以下是你群规则一览表：\n{0}'
 #房规速查

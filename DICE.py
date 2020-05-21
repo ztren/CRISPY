@@ -31,6 +31,7 @@ try:
 except:
     print('Can''t find the group. Please pin the group and try again.\n')
     raise
+changemisc('members',[str(len(group.members))+'\n'])
 group.send(WordStr.Hello)
 init()
 
@@ -57,6 +58,12 @@ def returner(msg):
         else:
             group.send(WordStr.DRM[randint(0,len(WordStr.DRM)-1)] + '#bot')
     sleep(0.2)
+    if readrule('welcome') == 'on':#群聊人数变化提示
+        if len(group.members) < int(readmisc('members')[0][:-1]):
+            group.send(WordStr.MemberExit)
+        elif len(group.members) > int(readmisc('members')[0][:-1]):
+            group.send(WordStr.MemberWelcome)
+    changemisc('members',[str(len(group.members))+'\n'])
     if msg.text[0]+'\n' in readmisc('cmd'):#命令列表
         if (msg.text[1:4] == 'bot'):
             if msg.member == group.owner:
@@ -81,6 +88,22 @@ def returner(msg):
                     elif x.lower() == 'on':
                         changerule('rpt','on')
                         group.send(WordStr.FunctionChange.format('随机复读',x))
+                    else:
+                        raise
+                except:
+                    group.send(WordStr.Err)
+            else:
+                group.send(WordStr.NotOwner)
+        elif (msg.text[1:8] == 'welcome'):#复读开关
+            if msg.member == group.owner:
+                x = cmd(msg.text[8:])
+                try:
+                    if x.lower() == 'off':
+                        changerule('welcome','off')
+                        group.send(WordStr.FunctionChange.format('进/退群提示',x))
+                    elif x.lower() == 'on':
+                        changerule('welcome','on')
+                        group.send(WordStr.FunctionChange.format('进/退群提示',x))
                     else:
                         raise
                 except:
