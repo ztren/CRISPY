@@ -1,5 +1,5 @@
 #———————————————————————————#
-####DICEBOT release 1.0.2####
+####DICEBOT release 1.0.3####
 ##########BY  ZTREN##########
 #———————————————————————————#
 #MODIIFYING OF THIS FILE IS##
@@ -337,7 +337,7 @@ def returner(msg):
                         puTarget = a[j][:-1]
                         if (getvl(puTarget,'wname') == ttn) & (puSource != puTarget):
                             writepl(puTarget,s)
-                            b.pop(i)
+                            b[i] = ''
                             if a[i] in ob:
                                 if a[j] not in ob:
                                     ob[ob.index(a[i])] = a[j]
@@ -557,10 +557,16 @@ def returner(msg):
             a = readmisc('ob')
             a = a if pu+'\n' in a else a+[pu+'\n']
             r = randint(1,100)
+            flg = False
             for i in range(0,len(a)):
-                fr = bot.friends().search('',puid=a[i][:-1])[0]
-                fr.send(WordStr.RHD.format(WordStr.GroupName,tn,r))
-                fr.send(WordStr.RHDLine)
+                try:
+                    fr = bot.friends().search('',puid=a[i][:-1])[0]
+                    fr.send(WordStr.RHD.format(WordStr.GroupName,tn,r))
+                    fr.send(WordStr.RHDLine)
+                except:
+                    flg = True
+            if flg == True:
+                group.send(WordStr.NotFriend)
         elif (msg.text[1] == 'r'):#普通骰子
             try:
                 if ' ' in msg.text[2:]:
