@@ -1,11 +1,23 @@
-#———————————————————————————#
-####DICEBOT release 1.0.3####
-##########BY  ZTREN##########
-#———————————————————————————#
-#MODIIFYING OF THIS FILE IS##
-#NOT ADVICED UNLESS YOU KNOW#
-######WHAT YOU ARE DOING#####
-#———————————————————————————#
+#—————————————————————————————————————————————————————————————————————————————————————————————————————#
+#
+#############################################Crispy DICE###############################################
+############################################RELEASE 1.0.4##############################################
+#
+#—————————————————————————————————————————————————————————————————————————————————————————————————————#
+#CRISPY, the Dicebot
+#Copyright (C) 2020 by SAIKA
+#
+#This program is free software: you can redistribute it and/or modify it
+#under the terms of the GNU Affero General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+#or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+#
+#You should have received a copy of the GNU Affero General Public License
+#along with this program. If not, see http://www.gnu.org/licenses/.
+#——————————————————————————————————————————————————————————————————————————————————————————————————————#
 
 from wxpy import *
 from random import *
@@ -22,7 +34,7 @@ import DiceConstant
 import NameGenerator
 
 if WordStr.GroupName == '':
-    raise Exception('Please Input the Name of Your WeChat Group.')
+    raise Exception('Please Input the Name of Your WeChat Group in WordStr.py')
 
 bot = Bot(cache_path=True)
 bot.enable_puid('wxpy_puid.pkl')
@@ -365,7 +377,7 @@ def returner(msg):
                                 if a[j] not in ob:
                                     ob[ob.index(a[i])] = a[j]
                                 else:
-                                    ob.pop(ob.index(a[i]))
+                                    ob[ob.index(a[i])] = ''
                             c.append(getvl(puTarget,'wname'))
                             os.remove('groups/'+WordStr.GroupName+'/'+puSource)
                             break
@@ -391,12 +403,12 @@ def returner(msg):
                             break
                         else:
                             writepl(puTarget,s)
-                            b.pop(i)
+                            b[i] = ''
                             if a[i] in ob:
                                 if pu+'\n' not in ob:
                                     ob[ob.index(a[i])] = pu + '\n'
                                 else:
-                                    ob.pop(ob.index(a[i]))
+                                    ob[ob.index(a[i])] = ''
                             os.remove('groups/'+WordStr.GroupName+'/'+puSource)
                             changemisc('pu',b)
                             changemisc('ob',ob)

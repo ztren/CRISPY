@@ -1,21 +1,37 @@
-#———————————————————————————#
-####WordStr release 1.0.2####
-##########BY  ZTREN##########
-#———————————————————————————#
-#####FEEL FREE TO MODIFY#####
-##########THIS FILE##########
-############ENJOY!###########
-#———————————————————————————#
+#—————————————————————————————————————————————————————————————————————————————————————————————————————#
+#
+############################################Crispy WordStr#############################################
+############################################RELEASE 1.0.4##############################################
+#
+#—————————————————————————————————————————————————————————————————————————————————————————————————————#
+#
+###############################THIS FILE IS RECOMMENDED TO BE CUSTOMIZED###############################
+#
+#—————————————————————————————————————————————————————————————————————————————————————————————————————#
+#CRISPY, the Dicebot
+#Copyright (C) 2020 by SAIKA
+#
+#This program is free software: you can redistribute it and/or modify it
+#under the terms of the GNU Affero General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+#or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+#
+#You should have received a copy of the GNU Affero General Public License
+#along with this program. If not, see http://www.gnu.org/licenses/.
+#——————————————————————————————————————————————————————————————————————————————————————————————————————#
 
 GroupName = ''#跑团群群名，初次使用需要修改！
 RCG = \
-['爬','给爷爬','你说你马呢？','输的啥心里没丶ACD数？','8太行嗷']#复读/nn长度过长
+['爬','给爷爬','CRISPY不太想记住这么长的东西','这8太行嗷']#复读/nn长度过长
 DRM = \
 ['昂？','爷佛了','啥啊','这是ao的','啊？','#¥…#¥!@#','搜到有','爬']#随机复读
 
 help = \
 '''——CRISPY使用指南——
-CRISPY release 1.0.2
+CRISPY release 1.0.4
 已经开发的功能有：
 .rules：规则速查
 .rd [text]：[因为text]投掷1D100的一颗骰子
@@ -39,13 +55,13 @@ CRISPY release 1.0.2
 目前随机复读状态为：{0}
 视为bot指令的提示符为：'.' '。' '/' '!' '！' ',' '，'
 视为分割线的提示符为：',' '，' '/' '|' ' '
-提示符可在groups/群名/_misc文件中修改
+提示符可在bot启动后在groups/<跑团群群名>/_misc文件中修改
 '''
 cmdhelp = \
-'''群主指令列表：
+'''——群主指令列表——
 .bot on(off) 将本bot禁言或解除禁言
-.rpt/jrrp/send on(off) 开启或关闭随机复读/今日人品/发送消息功能
-注：由于技术限制，微信群管理员无法使用此命令。多有不便，敬请谅解。
+.rpt/jrrp/send/welcome on(off) 开启或关闭随机复读/今日人品/发送消息/进退群提示功能
+注：由于wxpy技术限制，微信群管理员无法使用此命令；也有可能出现群主识别错误的问题，权限在群聊第二个成员手中，此时将群主转移到信任的人手中再转移回来便可正确读取。多有不便，敬请谅解。
 '''
 sthelp = \
 '''——ST功能使用指南——
@@ -282,7 +298,7 @@ Hello = \
 #开启程序时的问候语
 Farewell = \
 '那么，晚安'
-#关闭程序时的问候语
+#关闭程序时的问候语，暂时不使用
 Err = \
 '输入格式好像不太对的说'
 #输入有误

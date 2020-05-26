@@ -1,11 +1,23 @@
-#———————————————————————————#
-####DICEBOT release 1.0.2####
-##########BY  ZTREN##########
-#———————————————————————————#
-#MODIIFYING OF THIS FILE IS##
-#NOT ADVICED UNLESS YOU KNOW#
-######WHAT YOU ARE DOING#####
-#———————————————————————————#
+#—————————————————————————————————————————————————————————————————————————————————————————————————————#
+#
+###########################################Crispy FUNCTIONS############################################
+############################################RELEASE 1.0.4##############################################
+#
+#—————————————————————————————————————————————————————————————————————————————————————————————————————#
+#CRISPY, the Dicebot
+#Copyright (C) 2020 by SAIKA
+#
+#This program is free software: you can redistribute it and/or modify it
+#under the terms of the GNU Affero General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+#or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+#
+#You should have received a copy of the GNU Affero General Public License
+#along with this program. If not, see http://www.gnu.org/licenses/.
+#——————————————————————————————————————————————————————————————————————————————————————————————————————#
 from random import *
 from time import *
 import os
@@ -20,7 +32,7 @@ def init():
         initmisc = ['<cmd>\n/\n.\n。\n,\n，\n!\n！\n</cmd>\n',
         '<sep>\n,\n，\n/\n|\n \n</sep>\n'
         '<dt>\n'+strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日')+'\n</dt>\n',
-        '<rule>\ncocrule 0\nsend off\njrrp on\nrpt off\nmute off\nwelcome on\n</rule>\n',
+        '<rule>\ncocrule 0\nsend off\njrrp on\nrpt off\nmute off\nwelcome off\n</rule>\n',
         '<members>\n</members>\n<pu>\n</pu>\n<ob>\n</ob>\n']
         misc.writelines(initmisc)
         del initmisc

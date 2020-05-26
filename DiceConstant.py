@@ -1,7 +1,23 @@
-#———————————————————————————#
-####DICEBOT release 1.0.2####
-##########BY  ZTREN##########
-#———————————————————————————#
+#—————————————————————————————————————————————————————————————————————————————————————————————————————#
+#
+#########################################Crispy DICECONSTANT###########################################
+############################################GENERAL VER 1##############################################
+#
+#—————————————————————————————————————————————————————————————————————————————————————————————————————#
+#CRISPY, the Dicebot
+#Copyright (C) 2020 by SAIKA
+#
+#This program is free software: you can redistribute it and/or modify it
+#under the terms of the GNU Affero General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+#or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+#
+#You should have received a copy of the GNU Affero General Public License
+#along with this program. If not, see http://www.gnu.org/licenses/.
+#——————————————————————————————————————————————————————————————————————————————————————————————————————#
 
 syn = [
     ['力量','STR'],
@@ -154,7 +170,7 @@ fear = [
     "活埋恐惧症（Taphephobia）：对于被活埋或墓地的恐惧。",
     "公牛恐惧症（Taurophobia）：对公牛的恐惧。",
     "电话恐惧症（Telephonophobia）：对电话的恐惧。",
-    "怪物恐惧症①（Teratophobia）：对怪物的恐惧。",
+    "怪物恐惧症（Teratophobia）：对怪物的恐惧。",
     "深海恐惧症（Thalassophobia）：对海洋的恐惧。",
     "手术恐惧症（Tomophobia）：对外科手术的恐惧。",
     "十三恐惧症（Triskadekaphobia）：对数字13的恐惧症。",
