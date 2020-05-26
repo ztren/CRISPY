@@ -22,7 +22,7 @@ https://pypi.org/project/wxpy/
 https://github.com/ztren/COC7dicebot/releases \
 点击最新版本的zip下载并解压。
 ### 4.运行DICEBOT
-**初次运行请修改WordStr.py中的GroupName参数使单引号中的内容与需要使用DICE的群名一致**
+**初次运行请修改WordStr.py中的GroupName参数，使单引号中的内容与需要使用骰子的群名一致**\
 用命令行或终端运行**DICE.py**，并根据提示操作。\
 若扫描二维码之后未报错并出现">>>"字样（不含双引号）（linux系统显示为In [1]:），即说明登陆成功，可以使用。\
 **注：wxpy并不会响应bot自身所在微信号发送的消息。**
