@@ -468,7 +468,7 @@ def returner(msg):
                 if len(msg.text) > 4:
                     x = int(cmd(msg.text[4:]))
                 for i in range(0,x):
-                    ax = [[randint(1,6)+randint(1,6)+randint(1,6)+randint(1,6)] for i in range(0,6)] + [0]
+                    ax = [[randint(1,6),randint(1,6),randint(1,6),randint(1,6)] for i in range(0,6)] + [0]
                     for ii in range(0,6):
                         ax[ii].pop(ax[ii].index(min(ax[ii])))
                         ax[ii] = sum(ax[ii])
