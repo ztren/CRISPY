@@ -69,12 +69,12 @@ def returner(msg):
             if msg.member == group.owner:
                 if (msg.text[5:] == 'on'):
                     changerule('mute','off')
-                    group.send(MUGStr.Unmuted)
+                    group.send(WordStr.Unmuted)
                 elif (msg.text[5:] == 'off'):
                     changerule('mute','on')
-                    group.send(MUGStr.Muted)
+                    group.send(WordStr.Muted)
             else:
-                group.send(MUGStr.NotOwner)
+                group.send(WordStr.NotOwner)
     if readrule('mute') == 'on':
         return
     if msg.text[0]+'\n' in readmisc('cmd'):
@@ -112,12 +112,13 @@ def returner(msg):
                 group.send(WordStr.NotOwner)
         elif (msg.text[1:5] == 'help'):#显示帮助
             if len(msg.text) == 5:
-                group.send(WordStr.help.format(readrule('rpt')))
+                group.send(WordStr.help['default'].format(readrule('rpt')))
             else:
-                x = cmd(msg.text[5:])
-                if x == '':
-                    x = 'default'
-                group.send(WordStr.help[x])
+                try:
+                    x = cmd(msg.text[5:])
+                    group.send(WordStr.help[x])
+                except:
+                    group.send(WordStr.NoHelp)
         elif (msg.text[1:5] == 'rules'):#显示房规
             s = readmisc('rule')
             a = 'COC房规：'+WordStr.cocrule.split('######')[int(readrule('cocrule'))]+'其他规则：\n'
@@ -356,6 +357,8 @@ def returner(msg):
                 group.send(WordStr.EmptyRpt[randint(0,len(WordStr.EmptyRpt)-1)])
         elif (msg.text[1:9] == 'transfer'):#数据转移
             x = cmd(msg.text[9:])
+            if x == '':
+                x = 'all'
             if x == 'all':
                 group.send(WordStr.Transfering.format('所有用户'))
                 a = readmisc('pu')

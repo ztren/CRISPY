@@ -97,8 +97,9 @@ Dice的昵称优先级：nn设置的昵称>群昵称>备注名>微信昵称
 ''',
 'transfer' :
 '''——transfer功能使用指南——
+Transfer仅在puid重置（即所有用户数据丢失）情况下才需要使用
 .transfer <XXX> 将原群昵称为XXX的用户数据转移到你的数据下
-.transfer all 将群内所有人的原先的用户数据转移到现在的表单中
+.transfer [all] 将群内所有人的原先的用户数据转移到现在的表单中
 '''
 }
 #各种帮助文本
@@ -131,6 +132,9 @@ cocrule = \
 setcochelp = \
 '为每个群设置COC房规，如.setcoc 1（可选：0-5）\n'+cocrule
 #房规设置帮助
+NoHelp = \
+'并不存在此条帮助x'
+#帮助不存在
 NotOwner = \
 '你并不是群主，无法使用此命令~'
 #不是群主提示
