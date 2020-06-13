@@ -1,7 +1,7 @@
 #—————————————————————————————————————————————————————————————————————————————————————————————————————#
 #
 #############################################Crispy DICE###############################################
-############################################RELEASE 1.0.4##############################################
+############################################RELEASE 1.1.0##############################################
 #
 #—————————————————————————————————————————————————————————————————————————————————————————————————————#
 #CRISPY, the Dicebot
@@ -64,32 +64,20 @@ def returner(msg):
         changemisc('dt',dt+'\n')
         for i in range(0,len(readmisc('pu'))):
             st(readmisc('pu')[i][:-1],'rp',randint(1,100))
-    if (randint(1,15) == 1) & (len(msg.text) <= 50) & (readrule('rpt') == 'on') & (readrule('mute') == 'off'):#随机复读
-        if randint(1,2) == 1:
-            group.send(WordStr.Repeat.format(msg.text,tn))
-        else:
-            group.send(WordStr.DRM[randint(0,len(WordStr.DRM)-1)] + '#bot')
-    sleep(0.2)
-    if readrule('welcome') == 'on':#群聊人数变化提示
-        if len(group.members) < int(readmisc('members')[0][:-1]):
-            group.send(WordStr.MemberExit)
-        elif len(group.members) > int(readmisc('members')[0][:-1]):
-            group.send(WordStr.MemberWelcome)
-    changemisc('members',[str(len(group.members))+'\n'])
-    if msg.text[0]+'\n' in readmisc('cmd'):#命令列表
+    if msg.text[0]+'\n' in readmisc('cmd'):
         if (msg.text[1:4] == 'bot'):
             if msg.member == group.owner:
-                x = cmd(msg.text[4:])
-                if (x.lower() == 'on'):
+                if (msg.text[5:] == 'on'):
                     changerule('mute','off')
-                    group.send(WordStr.Unmuted)
-                elif (x.lower() == 'off'):
+                    group.send(MUGStr.Unmuted)
+                elif (msg.text[5:] == 'off'):
                     changerule('mute','on')
-                    group.send(WordStr.Muted)
+                    group.send(MUGStr.Muted)
             else:
-                group.send(WordStr.NotOwner)
-        if readrule('mute') == 'on':#被禁言时退出
-            return
+                group.send(MUGStr.NotOwner)
+    if readrule('mute') == 'on':
+        return
+    if msg.text[0]+'\n' in readmisc('cmd'):
         if (msg.text[1:4] == 'rpt'):#复读开关
             if msg.member == group.owner:
                 x = cmd(msg.text[4:])
@@ -127,13 +115,23 @@ def returner(msg):
                 group.send(WordStr.help.format(readrule('rpt')))
             else:
                 x = cmd(msg.text[5:])
-                group.send(eval('WordStr.'+x+'help'))
+                if x == '':
+                    x = 'default'
+                group.send(WordStr.help[x])
         elif (msg.text[1:5] == 'rules'):#显示房规
             s = readmisc('rule')
             a = 'COC房规：'+WordStr.cocrule.split('######')[int(readrule('cocrule'))]+'其他规则：\n'
             for i in range(1,len(s)):
                 a += s[i]
             group.send(WordStr.showrule.format(a))
+        elif (msg.text[1:4] == 'set'):
+            try:
+                x = cmd(msg.text[4:])
+                x = str(int(x))
+                changerule('defaultdice',x)
+                group.send(WordStr.setdice.format(x))
+            except:
+                group.send(WordStr.NotInteger.format('默认骰子面数'))
         elif (msg.text[1:3] == 'st'):#记录数据
             try:
                 a = cmd(msg.text[3:])
@@ -416,94 +414,6 @@ def returner(msg):
                             break
                     if i == len(a)-1:
                         group.send(WordStr.TransferFailed.format(WordStr.NoUsr))
-        elif (msg.text[1:3] == 'rc') | (msg.text[1:3] == 'ra'):#检定
-            x = cmd(msg.text[3:])
-            try:
-                d = randint(1,100)
-                if ' ' in x:
-                    x,val = x.split(' ')
-                    for i in range(0,len(x)):
-                        if x[i] in ['+','-','*','/','(',')']:
-                            val = eval(val+x[i:])
-                            x = x[:i]
-                            break
-                    val = int(val)
-                else:
-                    t = ''
-                    for i in range(0,len(x)):
-                        if x[i] in ['+','-','*','/','(',')']:
-                            t = x[i:]
-                            x = x[:i]
-                            break
-                    x = syn(x)
-                    val = floor(eval(getvl(pu,x) + t))
-                t = ''
-                rule = int(readrule('cocrule'))
-                if rule == 0:
-                    if d == 1:
-                        t = WordStr.GSuc
-                    elif val < 50:
-                        if d in range(96,101):
-                            t = WordStr.LFail
-                    elif val >= 50:
-                        if d == 100:
-                            t = WordStr.LFail
-                elif rule == 1:
-                    if val < 50:
-                        if d == 1:
-                            t = WordStr.GSuc
-                        elif d in range(96,101):
-                            t = WordStr.LFail
-                    elif val >= 50:
-                        if d in range(1,6):
-                            t = WordStr.GSuc
-                        if d == 100:
-                            t = WordStr.LFail
-                elif rule == 2:
-                    if d in range(1,6):
-                        if d <= val:
-                            t = WordStr.GSuc
-                    elif d > 95:
-                        if d > val:
-                            t = WordStr.LFail
-                elif rule == 3:
-                    if d in range(1,6):
-                        t = WordStr.GSuc
-                    elif d > 95:
-                        t = WordStr.LFail
-                elif rule == 4:
-                    if d in range(1,6):
-                        if d <= val // 10:
-                            t = WordStr.GSuc
-                    elif val < 50:
-                        if d >= 96 + val // 10:
-                            t = WordStr.LFail
-                    elif val >= 50:
-                        if d == 100:
-                            t = WordStr.LFail
-                elif rule == 5:
-                    if d in range(1,3):
-                        t = WordStr.GSuc
-                    elif val < 50:
-                        if d in range(96,101):
-                            t = WordStr.LFail
-                    elif val >= 50:
-                        if d in range(99,101):
-                            t = WordStr.LFail
-                if (t == ''):
-                    if d > val:
-                        t = WordStr.Fail
-                    elif d > val // 2:
-                        t = WordStr.Suc
-                    elif d > val // 5:
-                        t = WordStr.HardSuc
-                    else:
-                        t = WordStr.ExtremeSuc
-                group.send(WordStr.RC.format(tn,x,d,val,t))
-            except NameError:
-                group.send(WordStr.NoData.format(x))
-            except ValueError:
-                group.send(WordStr.NotInteger.format(x))
         elif (msg.text[1:3] == 'sc'):#san check
             x = cmd(msg.text[3:])
             x,y = sep(x)
@@ -548,45 +458,29 @@ def returner(msg):
                 group.send(s)
             except ValueError:
                 group.send(WordStr.NotInteger.format(''))
-        elif (msg.text[1:3] == 'rb') | (msg.text[1:3] == 'rp'):#奖励骰/惩罚骰
-            x1 = randint(1,100)
-            x2 = []
-            y  = ''
-            t  = 1
-            if len(msg.text) > 3:
-                if ' ' in msg.text:
-                    t = msg.text[3:].split(' ')[0]
-                    t = 1 if t == '' else int(t)
-                    if t > 100:
-                        group.send(WordStr.TooManyDices)
-                        t = -1
-                    y = msg.text[3:].split(' ')[1]
-                else:
-                    t = int(msg.text[3:])
-            for i in range(0,t):
-                x2.append(randint(0,10))
-            x3 = deepcopy(x2)
-            x3.append(x1 // 10)
-            if msg.text[2] == 'b':
-                if x1 % 10 == 0:
-                    while min(x3) == 0:
-                        for i in range(0,len(x3)):
-                            x3[i] = 10 if x3[i] == 0 else x3[i]
-                x = min(x3) * 10 + x1 % 10
-                k = '奖励'
-            elif msg.text[2] == 'p':
-                if x1 % 10 != 0:
-                    while max(x3) == 10:
-                        for i in range(0,len(x3)):
-                            x3[i] = -1 if x3[i] == 10 else x3[i]
-                elif min(x3) == 0:
-                    x3.append(10)
-                x = max(x3) * 10 + x1 % 10
-                k = '惩罚'
-            if y == '':
-                group.send(WordStr.RBP.format(tn,msg.text[2].upper(),x1,k,x2,x))
-            else:
-                group.send(WordStr.RBPn.format(y,tn,msg.text[2].upper(),x1,k,x2,x))
+        elif (msg.text[1:4] == 'dnd'):#人物卡生成
+            try:
+                x = 1
+                s = WordStr.DND.format(tn)
+                if len(msg.text) > 4:
+                    x = int(cmd(msg.text[4:]))
+                for i in range(0,x):
+                    ax = [[randint(1,6)+randint(1,6)+randint(1,6)+randint(1,6)] for i in range(0,6)] + [0]
+                    for ii in range(0,6):
+                        ax[ii].pop(ax[ii].index(min(ax[ii])))
+                        ax[ii] = sum(ax[ii])
+                    ax[6] = sum(ax)
+                    s += \
+                    '力量：'+ str(ax[0])\
+                    '敏捷：'+ str(ax[1])\
+                    '体质：'+ str(ax[2]) + '\n'\
+                    '智力：'+ str(ax[3])\
+                    '感知：'+ str(ax[4])\
+                    '魅力：'+ str(ax[5]) + '\n'\
+                    '总和：'+ str(ax[6]) + '\n'
+                group.send(s)
+            except ValueError:
+                group.send(WordStr.NotInteger.format(''))
         elif (msg.text[1:4] == 'rhd'):#暗骰
             group.send(WordStr.RHDGroup)
             a = readmisc('ob')
@@ -603,26 +497,129 @@ def returner(msg):
             if flg == True:
                 group.send(WordStr.NotFriend)
         elif (msg.text[1] == 'r'):#普通骰子
+            x = cmd(msg.text[2:])
             try:
-                if ' ' in msg.text[2:]:
-                    x,z = msg.text[2:].split(' ')
-                else:
-                    x,z = msg.text[2:],''
-                if x[0] == 'd':
-                    if x == 'd':
-                        x = '1d100'
-                    elif x[1] in ['+','-','*','/','(',')']:
-                        x = '1d100' + x[1:]
+                if (x[0] == 'c') | (x[0] == 'a'):
+                    x = cmd(x[1:])
+                    try:
+                        y = 0
+                        if (x[0] == 'b') | (x[0] == 'p'):
+                            i = 1
+                            if x[1] not in '0123456789':
+                                y = 1
+                            else:
+                                while x[i] in '0123456789':
+                                    y = y * 10 + int(x[i])
+                                    i += 1
+                            while x[i] == ' ':
+                                i += 1
+                            d,s = rbp(y,x[0])
+                            s += '='
+                            x = x[i:]
+                        else:
+                            d,s = randint(1,100),''
+                        if ' ' in x:
+                            x,val = x.split(' ')
+                            for i in range(0,len(x)):
+                                if x[i] in '+-*/()%':
+                                    for i in val:
+                                        if i not in '1234567890+-*/()%d ':
+                                            raise IndexError
+                                    val = eval(val+x[i:])
+                                    x = x[:i]
+                                    break
+                            val = int(val)
+                        else:
+                            t = ''
+                            for i in range(0,len(x)):
+                                if x[i] in '+-*/()%':
+                                    t = x[i:]
+                                    x = x[:i]
+                                    break
+                            x = syn(x)
+                            val = floor(eval(getvl(pu,x) + t))
+                        t = jdg(d,val)
+                        group.send(WordStr.RC.format(tn,x,s+str(d),val,t))
+                    except NameError:
+                        group.send(WordStr.NoData.format(x))
+                        raise
+                    except ValueError:
+                        group.send(WordStr.NotInteger.format(x))
+                        raise
+                    except:
+                        raise IndexError
+                elif (x[0] == 'b') | (x[0] == 'p'):
+                    if ' ' in msg.text[2:]:
+                        z = x[x.index(' ')+1:]
+                        x = x[:x.index(' ')]
                     else:
-                        x = '1' + x
-                y = calc(x)
-                l = x if str(eval(y)) == y else x + '=' + y
-                if (z == ''):
-                    group.send(WordStr.ROLL.format(tn,l,floor(eval(y))))
+                        z = ''
+                    for i in x[1:]:
+                        if i not in '1234567890+-*/()%d ':
+                            raise IndexError
+                    if len(x) == 1:
+                        y = 1
+                        opr = ''
+                    else:
+                        if x[1] not in '0123456789':
+                            y = 1
+                            if x[1] not in '+-*/()%':
+                                z = x[1:]
+                            else:
+                                i = 1
+                        else:
+                            i = 1
+                            y = 0
+                            while x[i] in '0123456789':
+                                y = y * 10 + int(x[i])
+                                i += 1
+                        opr = x[i:]
+                    d,s = rbp(y,x[0])
+                    sum = floor(eval(str(d)+opr))
+                    if (z == ''):
+                        group.send(WordStr.RBP.format(tn,x[0].upper,s,opr,sum))
+                    else:
+                        group.send(WordStr.RBPn.format(z,tn,x[0].upper,s,opr,sum))
                 else:
-                    group.send(WordStr.ROLLn.format(z,tn,l,floor(eval(y))))
-            except IndexError:
+                    if ' ' in x:
+                        x,z = x.split(' ')
+                    else:
+                        x,z = x,''
+                    if x[0] == 'd':
+                        s = readrule('defaultdice')
+                        if x == 'd':
+                            x = '1d' + s
+                        elif x[1] in ['+','-','*','/','(',')']:
+                            x = '1d' + s + x[1:]
+                        else:
+                            x = '1' + x
+                    y = calc(x)
+                    for i in y:
+                        if i not in '1234567890+-*/()%d ':
+                            raise IndexError
+                    l = x if str(eval(y)) == y else x + '=' + y
+                    if (z == ''):
+                        group.send(WordStr.ROLL.format(tn,l,floor(eval(y))))
+                    else:
+                        group.send(WordStr.ROLLn.format(z,tn,l,floor(eval(y))))
+            except TypeError:
                 group.send(WordStr.TooManyFaces)
-            except Exception:
+            except ValueError:
                 group.send(WordStr.TooManyDices)
+            except IndexError:
+                group.send(WordStr.Err)
+            except Exception as e:
+                group.send(e)
+    elif (randint(1,15) == 1) & (len(msg.text) <= 50) & (readrule('rpt') == 'on'):#随机复读
+        if randint(1,2) == 1:
+            group.send(WordStr.Repeat.format(msg.text,tn))
+        else:
+            group.send(WordStr.DRM[randint(0,len(WordStr.DRM)-1)] + '#bot')
+    sleep(0.2)
+    if readrule('welcome') == 'on':#群聊人数变化提示
+        if len(group.members) < int(readmisc('members')[0][:-1]):
+            group.send(WordStr.MemberExit)
+        elif len(group.members) > int(readmisc('members')[0][:-1]):
+            group.send(WordStr.MemberWelcome)
+    changemisc('members',[str(len(group.members))+'\n'])
 embed()

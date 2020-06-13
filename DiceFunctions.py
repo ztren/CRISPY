@@ -1,7 +1,7 @@
 #—————————————————————————————————————————————————————————————————————————————————————————————————————#
 #
 ###########################################Crispy FUNCTIONS############################################
-############################################RELEASE 1.0.4##############################################
+############################################RELEASE 1.1.0##############################################
 #
 #—————————————————————————————————————————————————————————————————————————————————————————————————————#
 #CRISPY, the Dicebot
@@ -20,6 +20,7 @@
 #——————————————————————————————————————————————————————————————————————————————————————————————————————#
 from random import *
 from time import *
+from copy import *
 import os
 import WordStr
 import DiceConstant
@@ -32,7 +33,7 @@ def init():
         initmisc = ['<cmd>\n/\n.\n。\n,\n，\n!\n！\n</cmd>\n',
         '<sep>\n,\n，\n/\n|\n \n</sep>\n'
         '<dt>\n'+strftime("%Y{0}%m{1}%d{2}", localtime()).format('年','月','日')+'\n</dt>\n',
-        '<rule>\ncocrule 0\nsend off\njrrp on\nrpt off\nmute off\nwelcome off\n</rule>\n',
+        '<rule>\ncocrule 0\nsend off\njrrp on\nrpt off\nmute off\nwelcome off\ndefaultdice 100\n</rule>\n',
         '<members>\n</members>\n<pu>\n</pu>\n<ob>\n</ob>\n']
         misc.writelines(initmisc)
         del initmisc
@@ -142,9 +143,9 @@ def sep(text):
 def dice(expr):
     x,y = expr.split('d')
     if (int(x) > 100):
-        raise Exception
+        raise ValueError
     elif (int(y) > 100000):
-        raise IndexError
+        raise TypeError
     sum = ''
     for i in range(0,int(x)):
         sum += str(randint(1,int(y))) + '+'
@@ -152,6 +153,95 @@ def dice(expr):
     if int(x) > 1:
         sum = '(' + sum + ')'
     return sum
+
+def jdg(d,val):
+    rule = int(readrule('cocrule'))
+    t = ''
+    if rule == 0:
+        if d == 1:
+            t = WordStr.GSuc
+        elif val < 50:
+            if d in range(96,101):
+                t = WordStr.LFail
+        elif val >= 50:
+            if d == 100:
+                t = WordStr.LFail
+    elif rule == 1:
+        if val < 50:
+            if d == 1:
+                t = WordStr.GSuc
+            elif d in range(96,101):
+                t = WordStr.LFail
+        elif val >= 50:
+            if d in range(1,6):
+                t = WordStr.GSuc
+            if d == 100:
+                t = WordStr.LFail
+    elif rule == 2:
+        if d in range(1,6):
+            if d <= val:
+                t = WordStr.GSuc
+        elif d > 95:
+            if d > val:
+                t = WordStr.LFail
+    elif rule == 3:
+        if d in range(1,6):
+            t = WordStr.GSuc
+        elif d > 95:
+            t = WordStr.LFail
+    elif rule == 4:
+        if d in range(1,6):
+            if d <= val // 10:
+                t = WordStr.GSuc
+        elif val < 50:
+            if d >= 96 + val // 10:
+                t = WordStr.LFail
+        elif val >= 50:
+            if d == 100:
+                t = WordStr.LFail
+    elif rule == 5:
+        if d in range(1,3):
+            t = WordStr.GSuc
+        elif val < 50:
+            if d in range(96,101):
+                t = WordStr.LFail
+        elif val >= 50:
+            if d in range(99,101):
+                t = WordStr.LFail
+    if (t == ''):
+        if d > val:
+            t = WordStr.Fail
+        elif d > val // 2:
+            t = WordStr.Suc
+        elif d > val // 5:
+            t = WordStr.HardSuc
+        else:
+            t = WordStr.ExtremeSuc
+    return t
+
+def rbp(t,type):
+    x1 = randint(1,100)
+    x2 = []
+    if t > 100:
+        group.send(WordStr.TooManyDices)
+        raise
+    for i in range(0,t):
+        x2.append(randint(0,9))
+    x3 = deepcopy(x2)
+    x3.append(x1 // 10)
+    if x1 % 10 == 0:
+        for i in range(0,len(x3)):
+            x3[i] = 10 if x3[i] == 0 else x3[i]
+    if type == 'b':
+        x = min(x3) * 10 + x1 % 10
+        k = '奖励'
+    elif type == 'p':
+        x = max(x3) * 10 + x1 % 10
+        k = '惩罚'
+    else:
+        raise TypeError
+    s = '{0}[{1}骰：{2}]'.format(x1,k,x2)
+    return [x,s]
 
 def calc(expr):
     opr = ['+','-','*','/','(',')']
