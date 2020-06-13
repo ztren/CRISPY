@@ -43,9 +43,9 @@ try:
 except:
     print('Can''t find the group. Please pin the group and try again.\n')
     raise
+init()
 changemisc('members',[str(len(group.members))+'\n'])
 group.send(WordStr.Hello)
-init()
 
 @bot.register(group)
 def returner(msg):
@@ -474,11 +474,11 @@ def returner(msg):
                         ax[ii] = ax[ii][0]+ax[ii][1]+ax[ii][2]
                     ax[6] = ax[0]+ax[1]+ax[2]+ax[3]+ax[4]+ax[5]
                     s += \
-                    '力量：'+ str(ax[0])\
-                    '敏捷：'+ str(ax[1])\
+                    '力量：'+ str(ax[0]) +\
+                    '敏捷：'+ str(ax[1]) +\
                     '体质：'+ str(ax[2]) + '\n'\
-                    '智力：'+ str(ax[3])\
-                    '感知：'+ str(ax[4])\
+                    '智力：'+ str(ax[3]) +\
+                    '感知：'+ str(ax[4]) +\
                     '魅力：'+ str(ax[5]) + '\n'\
                     '总和：'+ str(ax[6]) + '\n'
                 group.send(s)
