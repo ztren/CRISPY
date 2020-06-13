@@ -38,7 +38,7 @@ CRISPY release 1.0.4
 .help：显示本页面
 .set <n>：设置默认骰子面数
 .r：投掷骰子
-.rhd：暗骰1D100
+.rhd：暗骰1D100，ob位可以看到数值
 .sc：理智检定
 .coc [n]：生成n张COC人物卡（默认为1）
 .nn：更改显示名称
@@ -71,11 +71,12 @@ CRISPY release 1.0.4
 .rXdY [text]：[因为text]投掷XDY的一颗骰子
 .rb/rp[n] [text]：[因为text]投掷n个奖励骰/惩罚骰（默认为1）
 .ra/rc <text> [x]：投掷text检定（优先使用x数据，若x为空则采用.st注册过的的数据）
-目前暂时不能将rb/rp和ra组合，正在锐意开发中
+.rab/rap[n] <text> [x]：text检定中投掷n个奖励骰/惩罚骰
 ''',
 'sc' :
 '''——SC功能使用指南——
 .sc <x/y>：理智检定，若成功则减少x点理智，失败则减少y点理智
+需要提前使用st注册理智值
 ''',
 'en' :
 '''——EN功能使用指南——
