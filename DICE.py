@@ -471,8 +471,8 @@ def returner(msg):
                     ax = [[randint(1,6),randint(1,6),randint(1,6),randint(1,6)] for i in range(0,6)] + [0]
                     for ii in range(0,6):
                         ax[ii].pop(ax[ii].index(min(ax[ii])))
-                        ax[ii] = sum(ax[ii])
-                    ax[6] = sum(ax)
+                        ax[ii] = ax[ii][0]+ax[ii][1]+ax[ii][2]
+                    ax[6] = ax[0]+ax[1]+ax[2]+ax[3]+ax[4]+ax[5]
                     s += \
                     '力量：'+ str(ax[0])\
                     '敏捷：'+ str(ax[1])\
