@@ -1,7 +1,7 @@
 #—————————————————————————————————————————————————————————————————————————————————————————————————————#
 #
 #############################################Crispy DICE###############################################
-############################################RELEASE 1.1.0##############################################
+############################################RELEASE 1.1.1##############################################
 #
 #—————————————————————————————————————————————————————————————————————————————————————————————————————#
 #CRISPY, the Dicebot
@@ -57,6 +57,7 @@ def returner(msg):
         pers.write(init)
         pers.close()
         changemisc('pu',readmisc('pu')+[pu+'\n'])
+        sleep(2)
     tn = getvl(pu,'name')
     if msg.member.name != getvl(pu,'wname'):#更新群昵称
         st(pu,'wname',msg.member.name)
@@ -112,19 +113,42 @@ def returner(msg):
                 group.send(WordStr.NotOwner)
         elif (msg.text[1:5] == 'help'):#显示帮助
             if len(msg.text) == 5:
-                group.send(WordStr.help['default'].format(readrule('rpt')))
+                x = readmisc('cmd')
+                x1 = ''
+                for i in range(0,len(x)):
+                    j = '(空格)' if x[i][:-1] == ' ' else x[i][:-1]
+                    x1 = x1 + j + ' '
+                y = readmisc('sep')
+                y1 = ''
+                for i in range(0,len(y)):
+                    j = '(空格)' if y[i][:-1] == ' ' else y[i][:-1]
+                    y1 = y1 + j + ' '
+                group.send(WordStr.help['default'].format(readrule('rpt'),x1,y1))
             else:
                 try:
                     x = cmd(msg.text[5:])
                     group.send(WordStr.help[x])
                 except:
                     group.send(WordStr.NoHelp)
-        elif (msg.text[1:5] == 'rules'):#显示房规
+        elif (msg.text[1:6] == 'rules'):#显示房规
             s = readmisc('rule')
             a = 'COC房规：'+WordStr.cocrule.split('######')[int(readrule('cocrule'))]+'其他规则：\n'
             for i in range(1,len(s)):
                 a += s[i]
             group.send(WordStr.showrule.format(a))
+        elif (msg.text[1:7] == 'setcoc'):#coc房规
+            x = cmd(msg.text[7:])
+            try:
+                x = int(x)
+                if x in range(0,6):
+                    changerule('cocrule',str(x))
+                    group.send(WordStr.setcoc.format(x,WordStr.cocrule.split('######\n')[x]))
+                else:
+                    raise IndexError
+            except IndexError:
+                group.send(WordStr.InvalidRule.format('COC'))
+            except:
+                group.send(WordStr.Err)
         elif (msg.text[1:4] == 'set'):
             try:
                 x = cmd(msg.text[4:])
@@ -200,19 +224,29 @@ def returner(msg):
                 if nam == 'rp':
                     group.send(WordStr.RegDeny)
                 else:
+                    if len(x) == 1:
+                        try:
+                            val = int(getvl(pu,nam))
+                        except:
+                            val = int(nam)
                     if len(x) == 2:
-                        val = int(getvl(pu,nam))
+                        try:
+                            val = int(getvl(pu,nam))
+                        except:
+                            val = int(nam)
                     elif len(x) == 3:
                         val = int(x[1])
                         st(pu,nam,val)
                     else:
                         raise IndexError
                     r = randint(1,100)
-                    if '/' in x[-1]:
+                    if len(x) == 1:
+                        suc,fail = '1d10','0'
+                    elif '/' in x[-1]:
                         suc,fail = x[-1].split('/')
                     else:
                         suc,fail = x[-1],'0'
-                    if r <= val:
+                    if r > val:
                         a = int(calc(suc))
                         a1 = suc
                         n = '成功'
@@ -253,22 +287,6 @@ def returner(msg):
                 group.send(WordStr.choice.format(s))
             except ValueError:
                 group.send(WordStr.nochoice)
-        elif (msg.text[1:7] == 'setcoc'):#coc房规
-            if msg.member == group.owner:
-                x = cmd(msg.text[7:])
-                try:
-                    x = int(x)
-                    if x in range(0,6):
-                        changerule('cocrule',str(x))
-                        group.send(WordStr.setcoc.format(x,WordStr.cocrule.split('######\n')[x]))
-                    else:
-                        raise IndexError
-                except IndexError:
-                    group.send(WordStr.InvalidRule.format('COC'))
-                except:
-                    group.send(WordStr.Err)
-            else:
-                group.send(WordStr.NotOwner)
         elif (msg.text[2] == 'i'):#疯狂症状
             r1 = randint(1,10)
             r2 = '1D10 = ' + str(randint(1,10))
@@ -438,6 +456,8 @@ def returner(msg):
                 s = WordStr.COC.format(tn)
                 if len(msg.text) > 4:
                     x = int(cmd(msg.text[4:]))
+                if x > 10:
+                    raise IndexError
                 for i in range(0,x):
                     ax = [((randint(1,6)+randint(1,6)+randint(1,6))*5) for i in range(0,6)]\
                          + [((randint(1,6)+randint(1,6)+6)*5) for i in range (0,3)] + [0,0]
@@ -461,12 +481,16 @@ def returner(msg):
                 group.send(s)
             except ValueError:
                 group.send(WordStr.NotInteger.format(''))
+            except IndexError:
+                group.send('@'+tn+' '+WordStr.RCG[randint(0,len(WordStr.RCG)-1)])
         elif (msg.text[1:4] == 'dnd'):#人物卡生成
             try:
                 x = 1
                 s = WordStr.DND.format(tn)
                 if len(msg.text) > 4:
                     x = int(cmd(msg.text[4:]))
+                if x > 10:
+                    raise IndexError
                 for i in range(0,x):
                     ax = [[randint(1,6),randint(1,6),randint(1,6),randint(1,6)] for i in range(0,6)] + [0]
                     for ii in range(0,6):
@@ -484,6 +508,8 @@ def returner(msg):
                 group.send(s)
             except ValueError:
                 group.send(WordStr.NotInteger.format(''))
+            except IndexError:
+                group.send('@'+tn+' '+WordStr.RCG[randint(0,len(WordStr.RCG)-1)])
         elif (msg.text[1:4] == 'rhd'):#暗骰
             group.send(WordStr.RHDGroup)
             a = readmisc('ob')
@@ -503,7 +529,7 @@ def returner(msg):
             x = cmd(msg.text[2:])
             try:
                 if (x[0] == 'c') | (x[0] == 'a'):
-                    x = cmd(x[1:])
+                    x = syn(cmd(x[1:]))
                     try:
                         y = 0
                         if (x[0] == 'b') | (x[0] == 'p'):
@@ -611,8 +637,6 @@ def returner(msg):
                 group.send(WordStr.TooManyDices)
             except IndexError:
                 group.send(WordStr.Err)
-            except Exception as e:
-                group.send(e)
     elif (randint(1,15) == 1) & (len(msg.text) <= 50) & (readrule('rpt') == 'on'):#随机复读
         if randint(1,2) == 1:
             group.send(WordStr.Repeat.format(msg.text,tn))
