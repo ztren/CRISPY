@@ -549,14 +549,25 @@ def returner(msg):
                             d,s = randint(1,100),''
                         if ' ' in x:
                             x,val = x.split(' ')
-                            for i in range(0,len(x)):
-                                if x[i] in '+-*/()%':
-                                    for i in val:
-                                        if i not in '1234567890+-*/()%d ':
-                                            raise IndexError
-                                    val = eval(val+x[i:])
-                                    x = x[:i]
-                                    break
+                            try:
+                                for i in range(0,len(x)):
+                                    if x[i] in '+-*/()%':
+                                        for i in val:
+                                            if i not in '1234567890+-*/()%d ':
+                                                raise IndexError
+                                        val = eval(val+x[i:])
+                                        x = x[:i]
+                                        break
+                            except IndexError:
+                                x,val = val,x
+                                for i in range(0,len(x)):
+                                    if x[i] in '+-*/()%':
+                                        for i in val:
+                                            if i not in '1234567890+-*/()%d ':
+                                                raise IndexError
+                                        val = eval(val+x[i:])
+                                        x = x[:i]
+                                        break
                             val = int(val)
                         else:
                             t = ''
