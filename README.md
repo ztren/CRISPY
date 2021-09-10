@@ -7,7 +7,11 @@ CRISPY是saika独立编写的微信dicebot，旨在成为溯洄骰的微信版�
 ### 1.安装python3
 **注意：本程序并不兼容python2。**\
 官网链接如下。\
-https://www.python.org/downloads/
+https://www.python.org/downloads/ \
+**Windows 10：**\
+请使用系统自带的应用商店安装python。
+**OSX、LINUX：**\
+大部分该系统已经预装了python。
 ### 2.安装wxpy
 **WINDOWS：**\
 用管理员模式运行init文件夹中的setup.cmd文件来安装pip和wxpy。\
