@@ -4,6 +4,8 @@ CRISPY, the Dicebot, by SAIKA
 CRISPY是saika独立编写的微信dicebot，旨在成为溯洄骰的微信版替代品。
 开发中的功能：dnd，黑白名单系统
 ## 安装
+### 0.让Windows系统省去以下麻烦的操作成为UBUNTU的最快方法
+在Windows应用商店安装Ubuntu20（WSL）。
 ### 1.安装python3
 **注意：本程序并不兼容python2。**\
 官网链接如下。\
